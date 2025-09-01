@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: {{ include "grafana.ingressName" . }}
+  annotations:
+    cert-manager.io/cluster-issuer: {{ .Values.ingress.annotations.clusterIssuer }}
+spec:
+  ingressClassName: {{ .Values.ingress.className }}
+  tls:
+    - hosts:
+        {{- range .Values.ingress.tls }}
+        - {{ .hosts | join "," }}
+        {{- end }}
+      secretName: {{ range .Values.ingress.tls }}{{ .secretName }}{{ end }}
+  rules:
+    - host: {{ range .Values.ingress.hosts }}{{ .host }}{{ end }}
+      http:
+        paths:
+          - path: {{ range .Values.ingress.hosts }}{{ (index .paths 0).path }}{{ end }}
+            pathType: {{ range .Values.ingress.hosts }}{{ (index .paths 0).pathType }}{{ end }}
+            backend:
+              service:
+                name: {{ include "grafana.fullname" . }}
+                port:
+                  number: {{ .Values.service.port }}

@@ -1,0 +1,82 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "grafana.fullname" . }}
+  labels:
+    app: {{ include "grafana.name" . }}
+spec:
+  replicas: {{ .Values.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ include "grafana.name" . }}
+  template:
+    metadata:
+      labels:
+        app: {{ include "grafana.name" . }}
+    spec:
+      containers:
+      - name: {{ include "grafana.name" . }}
+        securityContext:
+          privileged: true 
+        image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
+        imagePullPolicy: {{ .Values.image.pullPolicy }}
+        resources:
+          requests:
+            memory: "{{ .Values.resources.requests.memory }}"
+            cpu: "{{ .Values.resources.requests.cpu }}"
+          limits:
+            memory: "{{ .Values.resources.limits.memory }}"
+            cpu: "{{ .Values.resources.limits.cpu }}"
+        ports:
+        - containerPort: {{ .Values.service.port }}
+          protocol: TCP
+        env:
+        - name: GF_AUTH_BASIC_ENABLED
+          value: {{ .Values.env.GF_AUTH_BASIC_ENABLED | quote }}
+        - name: GF_USERS_ALLOW_ORG_CREATE
+          value: {{ .Values.env.GF_USERS_ALLOW_ORG_CREATE | quote }}
+        - name: GF_AUTH_ANONYMOUS_ENABLED
+          value: {{ .Values.env.GF_AUTH_ANONYMOUS_ENABLED | quote }}
+        - name: GF_AUTH_ANONYMOUS_ORG_ROLE
+          value: {{ .Values.env.GF_AUTH_ANONYMOUS_ORG_ROLE | quote }}
+        - name: GF_SERVER_ROOT_URL
+          value: {{ .Values.env.GF_SERVER_ROOT_URL | quote }}
+        - name: GF_SECURITY_ADMIN_USER
+          value: {{ .Values.env.GF_AUTH_BASIC_USER | quote }}
+        - name: GF_SECURITY_ADMIN_PASSWORD
+          value: {{ .Values.env.GF_AUTH_BASIC_PASSWORD | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_ENABLED
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_ENABLED | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_NAME
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_NAME | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_CLIENT_ID
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_CLIENT_ID | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_AUTH_URL
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_AUTH_URL | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_TOKEN_URL
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_TOKEN_URL | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_API_URL
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_API_URL | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_EMAIL_ATTRIBUTE_PATH
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_EMAIL_ATTRIBUTE_PATH | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_ALLOWED_DOMAINS
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_ALLOWED_DOMAINS | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_SCOPES
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_SCOPES | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_STRICT
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_STRICT | quote }}
+        - name: GF_AUTH_GENERIC_OAUTH_SKIP_ORG_ROLE_SYNC
+          value: {{ .Values.env.GF_AUTH_GENERIC_OAUTH_SKIP_ORG_ROLE_SYNC | quote }}
+        volumeMounts:
+        - name: grafana-storage
+          mountPath: /var/lib/grafana
+      volumes:
+      - name: grafana-storage
+        persistentVolumeClaim:
+          claimName: {{ include "grafana.pvcName" . }}

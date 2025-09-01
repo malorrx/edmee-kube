@@ -1,0 +1,619 @@
+{
+    "__inputs": [
+      {
+        "name": "DS_MYSQL-BACKTEST-BDD",
+        "label": "mysql-backtest-bdd",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "mysql",
+        "pluginName": "MySQL"
+      }
+    ],
+    "__elements": {},
+    "__requires": [
+      {
+        "type": "panel",
+        "id": "gauge",
+        "name": "Gauge",
+        "version": ""
+      },
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "10.4.2"
+      },
+      {
+        "type": "datasource",
+        "id": "mysql",
+        "name": "MySQL",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "table",
+        "name": "Table",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "timeframe"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 93
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "symbol"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 86
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "coeff0"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 52
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "coeff1"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 56
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "coeff2"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 63
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "coeff3"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 66
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "coeff4"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 65
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "nb_trades"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 96
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "avg_profit_percentage"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 171
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "weighted_profit"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 153
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "trade_count"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 106
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "profit_stddev"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 125
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "id"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 81
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "total_relative_profit_ajusted"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "%"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "avg_profit_percentage"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "%"
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "total_relative_profit"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "%"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 18,
+          "w": 20,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": true,
+              "displayName": "total_relative_profit_ajusted"
+            }
+          ]
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    s.id,\r\n    s.timeframe,\r\n    s.coeff0,\r\n    s.coeff1,\r\n    s.coeff2,\r\n    s.coeff3,\r\n    s.coeff4,\r\n    COUNT(t.id) AS trade_count,\r\n    ROUND(STDDEV(\r\n        CASE \r\n            WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n            WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n        END\r\n    ), 2) AS profit_stddev,\r\n    ROUND(AVG(\r\n        CASE \r\n            WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n            WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n        END\r\n    ), 2) AS avg_profit_percentage,\r\n    ROUND(SUM(\r\n        CASE \r\n            WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n            WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n        END\r\n    ), 2) AS total_relative_profit_ajusted,\r\n    ROUND(SUM(\r\n        CASE \r\n            WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * 100 \r\n            WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * 100 \r\n        END\r\n    ), 2) AS total_relative_profit\r\nFROM \r\n    BT_strategies s\r\nLEFT JOIN \r\n    BT_trades t ON s.id = t.strategyId\r\nWHERE \r\n    s.backtestId = (SELECT id FROM BT_backtests WHERE name = '${backtest_name}')\r\n    AND s.symbol = '${symbol}'\r\nGROUP BY \r\n    s.id\r\nORDER BY\r\n    total_relative_profit DESC\r\nLIMIT 100;\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Comparaison stratégies",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 20,
+          "y": 0
+        },
+        "id": 2,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    COUNT(s.id) AS strategy_count\r\nFROM \r\n    BT_strategies s\r\nJOIN \r\n    BT_backtests b ON s.backtestId = b.id\r\nWHERE \r\n    b.name = '${backtest_name}'\r\n    AND s.symbol = '${symbol}';\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Stratégies évaluées",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 4,
+          "x": 20,
+          "y": 4
+        },
+        "id": 3,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    COUNT(DISTINCT s.id) AS strategy_count\r\nFROM \r\n    BT_strategies s\r\nJOIN \r\n    BT_backtests b ON s.backtestId = b.id\r\nJOIN \r\n    BT_trades t ON s.id = t.strategyId\r\nWHERE \r\n    b.name = '${backtest_name}'\r\n    AND s.symbol = '${symbol}';\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Stratégies Conservées",
+        "type": "gauge"
+      }
+    ],
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {},
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL-BACKTEST-BDD}"
+          },
+          "definition": "SELECT name AS backtestName \nFROM BT_backtests;\n",
+          "hide": 0,
+          "includeAll": false,
+          "label": "backtest_name",
+          "multi": false,
+          "name": "backtest_name",
+          "options": [],
+          "query": "SELECT name AS backtestName \nFROM BT_backtests;\n",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {},
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL-BACKTEST-BDD}"
+          },
+          "definition": "SELECT DISTINCT symbol \nFROM BT_strategies \nWHERE backtestId = (\n    SELECT id FROM BT_backtests WHERE name = '${backtest_name}'\n);\n",
+          "hide": 0,
+          "includeAll": false,
+          "label": "symbol",
+          "multi": false,
+          "name": "symbol",
+          "options": [],
+          "query": "SELECT DISTINCT symbol \nFROM BT_strategies \nWHERE backtestId = (\n    SELECT id FROM BT_backtests WHERE name = '${backtest_name}'\n);\n",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "1",
+            "value": "1"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Leverage",
+          "multi": false,
+          "name": "leverage",
+          "options": [
+            {
+              "selected": true,
+              "text": "1",
+              "value": "1"
+            },
+            {
+              "selected": false,
+              "text": "2",
+              "value": "2"
+            },
+            {
+              "selected": false,
+              "text": "3",
+              "value": "3"
+            },
+            {
+              "selected": false,
+              "text": "4",
+              "value": "4"
+            },
+            {
+              "selected": false,
+              "text": "5",
+              "value": "5"
+            }
+          ],
+          "query": "1,2,3,4,5",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Backtest - Comparaison stratégies",
+    "uid": "cdzsbqsaywikga",
+    "version": 30,
+    "weekStart": ""
+  }

@@ -1,0 +1,61 @@
+replicaCount: 1
+
+image:
+  repository: harbor.infra.edmee.cloud/docker/grafana/grafana
+  tag: 10.4.2
+  pullPolicy: Always
+
+resources:
+  requests:
+    memory: "128Mi"
+    cpu: "125m"
+  limits:
+    memory: "500Mi"
+    cpu: "250m"
+
+service:
+  type: ClusterIP
+  port: 3000
+
+persistence:
+  enabled: true
+  accessMode: ReadWriteMany
+  size: 2Gi
+  storageClass: rook-cephfs
+
+ingress:
+  enabled: true
+  className: nginx
+  annotations:
+    clusterIssuer: letsencrypt-edmee-net
+  hosts:
+    - host: grafana.infra.edmee.cloud
+      paths:
+        - path: /
+          pathType: Prefix
+  tls:
+    - hosts:
+        - grafana.infra.edmee.cloud
+      secretName: grafana-cert
+
+env:
+  GF_AUTH_BASIC_ENABLED: "true"
+  GF_USERS_ALLOW_ORG_CREATE: "true"
+  GF_AUTH_ANONYMOUS_ENABLED: "false"
+  GF_AUTH_ANONYMOUS_ORG_ROLE: "Admin"
+  GF_SERVER_ROOT_URL: "https://grafana.infra.edmee.cloud"
+  GF_AUTH_BASIC_USER: "admin"
+  GF_AUTH_BASIC_PASSWORD: "esluhbvlmdbw"
+  GF_AUTH_GENERIC_OAUTH_ENABLED : "true"
+  GF_AUTH_GENERIC_OAUTH_NAME : "Keycloak-OAuth"
+  GF_AUTH_GENERIC_OAUTH_CLIENT_ID : "edmee-grafana"
+  GF_AUTH_GENERIC_OAUTH_CLIENT_SECRET : "cTeCwE3zu20JGEcszm9TquzZn5hfU0dC"
+  GF_AUTH_GENERIC_OAUTH_AUTH_URL : "https://auth.edmee.cloud/realms/internal/protocol/openid-connect/auth"
+  GF_AUTH_GENERIC_OAUTH_TOKEN_URL : "https://auth.edmee.cloud/realms/internal/protocol/openid-connect/token"
+  GF_AUTH_GENERIC_OAUTH_API_URL : "https://auth.edmee.cloud/realms/internal/protocol/openid-connect/userinfo"
+  GF_AUTH_GENERIC_OAUTH_EMAIL_ATTRIBUTE_PATH : "email"
+  GF_AUTH_GENERIC_OAUTH_ALLOW_SIGN_UP : "true"
+  GF_AUTH_GENERIC_OAUTH_SCOPES : roles openid email profile offline_access
+  GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_PATH : contains(resource_access.grafana.roles[*], 'admin') && 'Admin' || contains(resource_access.grafana.roles[*], 'editor') && 'Editor' || 'Viewer'
+  GF_AUTH_GENERIC_OAUTH_ROLE_ATTRIBUTE_STRICT : false
+  GF_AUTH_GENERIC_OAUTH_SKIP_ORG_ROLE_SYNC : true

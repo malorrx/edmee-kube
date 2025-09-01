@@ -1,0 +1,1547 @@
+{
+    "__inputs": [
+      {
+        "name": "DS_MYSQL-BACKTEST-BDD",
+        "label": "mysql-backtest-bdd",
+        "description": "",
+        "type": "datasource",
+        "pluginId": "mysql",
+        "pluginName": "MySQL"
+      }
+    ],
+    "__elements": {},
+    "__requires": [
+      {
+        "type": "panel",
+        "id": "barchart",
+        "name": "Bar chart",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "gauge",
+        "name": "Gauge",
+        "version": ""
+      },
+      {
+        "type": "grafana",
+        "id": "grafana",
+        "name": "Grafana",
+        "version": "10.4.2"
+      },
+      {
+        "type": "datasource",
+        "id": "mysql",
+        "name": "MySQL",
+        "version": "1.0.0"
+      },
+      {
+        "type": "panel",
+        "id": "table",
+        "name": "Table",
+        "version": ""
+      },
+      {
+        "type": "panel",
+        "id": "timeseries",
+        "name": "Time series",
+        "version": ""
+      }
+    ],
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": null,
+    "links": [],
+    "panels": [
+      {
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 0
+        },
+        "id": 9,
+        "panels": [],
+        "title": "Row title",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "none"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 4,
+          "w": 24,
+          "x": 0,
+          "y": 1
+        },
+        "id": 13,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    DISTINCT symbol as symbol,\r\n    timeframe as Timeframe,\r\n    coeff0,\r\n    coeff1,\r\n    coeff2,\r\n    coeff3,\r\n    coeff4,\r\n    creationTs as \"Start Time\"\r\nFROM \r\n    BT_strategies st\r\nWHERE \r\n    st.id = '${strategy_id}';\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "closePrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "entryPrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Moyenne de la durée des trades",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "custom": {
+              "align": "auto",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "inspect": false
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": null
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Coeff 0"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 79
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Coeff 1"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 78
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Type"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 92
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "entryTimestamp"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 153
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "trade_id"
+              },
+              "properties": [
+                {
+                  "id": "custom.width",
+                  "value": 82
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "duration_hours"
+              },
+              "properties": [
+                {
+                  "id": "unit",
+                  "value": "h"
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 13,
+          "w": 24,
+          "x": 0,
+          "y": 5
+        },
+        "id": 1,
+        "options": {
+          "cellHeight": "sm",
+          "footer": {
+            "countRows": false,
+            "fields": "",
+            "reducer": [
+              "sum"
+            ],
+            "show": false
+          },
+          "showHeader": true,
+          "sortBy": [
+            {
+              "desc": false,
+              "displayName": "profit_percentage"
+            }
+          ]
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    t.id AS trade_id,\r\n    t.entryTs AS entryTimestamp,\r\n    t.closeTs AS closeTimestamp,\r\n    t.type AS trade_type,\r\n    TIMESTAMPDIFF(HOUR, t.entryTs, t.closeTs) AS duration_hours,\r\n    t.entryPrice,\r\n    t.closePrice,\r\n    ROUND(\r\n        CASE \r\n            WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n            WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n        END, 2\r\n    ) AS profit_percentage\r\nFROM \r\n    BT_trades t\r\nJOIN \r\n    BT_strategies s ON t.strategyId = s.id\r\nJOIN \r\n    BT_backtests b ON s.backtestId = b.id\r\nWHERE \r\n    b.name = '${backtest_name}'\r\n    AND s.id = '${strategy_id}';\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "closePrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "entryPrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Panel Title",
+        "type": "table"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "%"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 5,
+          "x": 0,
+          "y": 18
+        },
+        "id": 8,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    ROUND(STDDEV(\r\n        CASE \r\n            WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n            WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n        END\r\n    ), 2) AS profit_stddev_percentage\r\nFROM \r\n    BT_trades t\r\nWHERE \r\n    t.strategyId = '${strategy_id}';\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "closePrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "entryPrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Ecrat Type de profits",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "%"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 6,
+          "x": 5,
+          "y": 18
+        },
+        "id": 3,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    ROUND((SUM(\r\n        CASE \r\n            WHEN (\r\n                (t.type = 'LONG' AND ((t.closePrice - t.entryPrice)/t.entryPrice * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)) > 0) OR\r\n                (t.type = 'SHORT' AND ((t.entryPrice - t.closePrice)/t.entryPrice * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)) > 0)\r\n            ) THEN 1 ELSE 0 END\r\n    ) / COUNT(*)) * 100, 2) AS positive_trade_percentage\r\nFROM \r\n    BT_trades t\r\nWHERE \r\n    t.strategyId = '${strategy_id}';\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "closePrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "entryPrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Pourcentage de trades positifs",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "%"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 7,
+          "x": 11,
+          "y": 18
+        },
+        "id": 4,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    ROUND(AVG(\r\n        CASE \r\n            WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n            WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n        END\r\n    ), 2) AS avg_profit_percentage\r\nFROM \r\n    BT_trades t\r\nWHERE \r\n    t.strategyId = '${strategy_id}';\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "closePrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "entryPrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Moyenne des profits en pourcentage",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "%"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 11,
+          "w": 6,
+          "x": 18,
+          "y": 18
+        },
+        "id": 2,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    ROUND(SUM(\r\n        CASE \r\n            WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n            WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n        END\r\n    ), 2) AS total_profit_percentage\r\nFROM \r\n    BT_trades t\r\nWHERE \r\n    t.strategyId = '${strategy_id}';\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "closePrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "entryPrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Bénéfices totaux par rapport à une mise de trade",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": " Trades"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 5,
+          "x": 0,
+          "y": 24
+        },
+        "id": 5,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    COUNT(t.id) AS trade_count\r\nFROM \r\n    BT_trades t\r\nWHERE \r\n    t.strategyId = '${strategy_id}';\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "closePrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "entryPrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Nombre total de trades",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "s"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 5,
+          "w": 6,
+          "x": 5,
+          "y": 24
+        },
+        "id": 10,
+        "options": {
+          "minVizHeight": 75,
+          "minVizWidth": 75,
+          "orientation": "auto",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showThresholdLabels": false,
+          "showThresholdMarkers": true,
+          "sizing": "auto"
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    ROUND(AVG(TIMESTAMPDIFF(SECOND, t.entryTs, t.closeTs)), 2) AS avg_trade_duration_seconds\r\nFROM \r\n    BT_trades t\r\nWHERE \r\n    t.strategyId = '${strategy_id}';\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "closePrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "entryPrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Moyenne de la durée des trades",
+        "type": "gauge"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 10,
+          "w": 24,
+          "x": 0,
+          "y": 29
+        },
+        "id": 14,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \r\n    t.closeTs AS closeTimestamp,\r\n    DATE_FORMAT(t.closeTs, '%Y-%m') AS month,\r\n    @cumulative_profit := @cumulative_profit + \r\n    CASE \r\n        WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * 100 * ${leverage} - ((${leverage}+1)*0.15 + 0.1)\r\n        WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * 100 * ${leverage} - ((${leverage}+1)*0.15 + 0.1)\r\n    END AS cumulative_portfolio_percentage,\r\n    COUNT(*) OVER (PARTITION BY DATE_FORMAT(t.closeTs, '%Y-%m')) AS trade_count,\r\n    ROUND(SUM(\r\n        CASE \r\n            WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n            WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n        END\r\n    ) OVER (PARTITION BY DATE_FORMAT(t.closeTs, '%Y-%m')), 2) AS monthly_profit_percentage\r\nFROM \r\n    BT_trades t, \r\n    (SELECT @cumulative_profit := 0) AS init\r\nWHERE \r\n    t.strategyId = '${strategy_id}'\r\n    AND t.closeTs IS NOT NULL\r\nORDER BY \r\n    t.closeTs ASC;\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "HIstorical",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 80,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                }
+              ]
+            },
+            "unit": "."
+          },
+          "overrides": [
+            {
+              "__systemRef": "hideSeriesFrom",
+              "matcher": {
+                "id": "byNames",
+                "options": {
+                  "mode": "exclude",
+                  "names": [
+                    "trade_count"
+                  ],
+                  "prefix": "All except:",
+                  "readOnly": true
+                }
+              },
+              "properties": [
+                {
+                  "id": "custom.hideFrom",
+                  "value": {
+                    "legend": false,
+                    "tooltip": false,
+                    "viz": true
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 13,
+          "w": 24,
+          "x": 0,
+          "y": 39
+        },
+        "id": 7,
+        "options": {
+          "barRadius": 0,
+          "barWidth": 0.97,
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "orientation": "auto",
+          "showValue": "auto",
+          "stacking": "none",
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          },
+          "xField": "profit_range",
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 0
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT\r\n  CASE\r\n    WHEN profit_percentage < -20 THEN \"< -20%\"\r\n    WHEN profit_percentage BETWEEN -20 AND -15 THEN \"-20% à -15%\"\r\n    WHEN profit_percentage BETWEEN -15 AND -10 THEN \"-15% à -10%\"\r\n    WHEN profit_percentage BETWEEN -10 AND -5 THEN \"-10% à -5%\"\r\n    WHEN profit_percentage BETWEEN -5 AND 0 THEN \"-5% à 0%\"\r\n    WHEN profit_percentage BETWEEN 0 AND 5 THEN \"0% à 5%\"\r\n    WHEN profit_percentage BETWEEN 5 AND 10 THEN \"5% à 10%\"\r\n    WHEN profit_percentage BETWEEN 10 AND 15 THEN \"10% à 15%\"\r\n    WHEN profit_percentage BETWEEN 15 AND 20 THEN \"15% à 20%\"\r\n    WHEN profit_percentage BETWEEN 20 AND 30 THEN \"20% à 30%\"\r\n    ELSE \"> 30%\"\r\n  END AS profit_range,\r\n  COUNT(*) AS trade_count,\r\n  CASE\r\n    WHEN profit_percentage < -20 THEN 1\r\n    WHEN profit_percentage BETWEEN -20 AND -15 THEN 2\r\n    WHEN profit_percentage BETWEEN -15 AND -10 THEN 3\r\n    WHEN profit_percentage BETWEEN -10 AND -5 THEN 4\r\n    WHEN profit_percentage BETWEEN -5 AND 0 THEN 5\r\n    WHEN profit_percentage BETWEEN 0 AND 5 THEN 6\r\n    WHEN profit_percentage BETWEEN 5 AND 10 THEN 7\r\n    WHEN profit_percentage BETWEEN 10 AND 15 THEN 8\r\n    WHEN profit_percentage BETWEEN 15 AND 20 THEN 9\r\n    WHEN profit_percentage BETWEEN 20 AND 30 THEN 10\r\n    ELSE 11\r\n  END AS range_order\r\nFROM (\r\n  SELECT\r\n    CASE\r\n      WHEN type = \"LONG\" THEN ((closePrice - entryPrice) / entryPrice) * 100 * ${leverage} - ((${leverage}+1)*0.15 + 0.1)\r\n      WHEN type = \"SHORT\" THEN ((entryPrice - closePrice) / entryPrice) * 100 * ${leverage} - ((${leverage}+1)*0.15 + 0.1)\r\n    END AS profit_percentage\r\n  FROM\r\n    BT_trades\r\n  WHERE\r\n    strategyId = '${strategy_id}'\r\n) AS profits\r\nGROUP BY profit_range, range_order\r\nORDER BY range_order;\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [
+                    {
+                      "name": "closePrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                },
+                {
+                  "parameters": [
+                    {
+                      "name": "entryPrice",
+                      "type": "functionParameter"
+                    }
+                  ],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            },
+            "table": "BT_trades"
+          }
+        ],
+        "title": "Répartition du bénéfice des trades",
+        "type": "barchart"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "barAlignment": 0,
+              "drawStyle": "line",
+              "fillOpacity": 0,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "insertNulls": false,
+              "lineInterpolation": "linear",
+              "lineWidth": 1,
+              "pointSize": 5,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "showPoints": "auto",
+              "spanNulls": false,
+              "stacking": {
+                "group": "A",
+                "mode": "none"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            },
+            "unit": "%"
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 52
+        },
+        "id": 11,
+        "options": {
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          }
+        },
+        "pluginVersion": "10.4.2",
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT\r\n    t.closeTs AS closeTimestamp,\r\n    @cumulative_profit := @cumulative_profit + \r\n    CASE \r\n        WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * 100 * ${leverage} - ((${leverage}+1)*0.15 + 0.1)\r\n        WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * 100 * ${leverage} - ((${leverage}+1)*0.15 + 0.1)\r\n    END AS cumulative_portfolio_percentage\r\nFROM \r\n    BT_trades t, \r\n    (SELECT @cumulative_profit := 0) AS init\r\nWHERE \r\n    t.strategyId = '${strategy_id}'\r\n    AND t.closeTs IS NOT NULL\r\nORDER BY \r\n    t.closeTs ASC;\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Cumulative per",
+        "type": "timeseries"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "${DS_MYSQL-BACKTEST-BDD}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "palette-classic"
+            },
+            "custom": {
+              "axisBorderShow": false,
+              "axisCenteredZero": false,
+              "axisColorMode": "text",
+              "axisLabel": "",
+              "axisPlacement": "auto",
+              "fillOpacity": 80,
+              "gradientMode": "none",
+              "hideFrom": {
+                "legend": false,
+                "tooltip": false,
+                "viz": false
+              },
+              "lineWidth": 1,
+              "scaleDistribution": {
+                "type": "linear"
+              },
+              "thresholdsStyle": {
+                "mode": "off"
+              }
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green"
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 9,
+          "w": 24,
+          "x": 0,
+          "y": 60
+        },
+        "id": 12,
+        "options": {
+          "barRadius": 0,
+          "barWidth": 0.97,
+          "fullHighlight": false,
+          "groupWidth": 0.7,
+          "legend": {
+            "calcs": [],
+            "displayMode": "list",
+            "placement": "bottom",
+            "showLegend": true
+          },
+          "orientation": "auto",
+          "showValue": "auto",
+          "stacking": "none",
+          "tooltip": {
+            "mode": "single",
+            "sort": "none"
+          },
+          "xTickLabelRotation": 0,
+          "xTickLabelSpacing": 100
+        },
+        "targets": [
+          {
+            "dataset": "backtest",
+            "datasource": {
+              "type": "mysql",
+              "uid": "${DS_MYSQL-BACKTEST-BDD}"
+            },
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT\r\n    DATE_FORMAT(t.closeTs, '%Y-%m') AS month,  -- Format de la date en année-mois\r\n    COUNT(*) AS trade_count,                  -- Nombre de trades par mois\r\n    ROUND(SUM(\r\n        CASE \r\n            WHEN t.type = 'LONG' THEN ((t.closePrice - t.entryPrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n            WHEN t.type = 'SHORT' THEN ((t.entryPrice - t.closePrice) / t.entryPrice) * ${leverage} * 100 - ((${leverage}*2*0.1) + 0.1)\r\n        END\r\n    ), 2) AS Profit\r\nFROM \r\n    BT_trades t\r\nWHERE \r\n    t.strategyId = '${strategy_id}'          -- Filtrage par ID de stratégie\r\n    AND t.closeTs IS NOT NULL                -- Assurer que le trade est clôturé\r\nGROUP BY \r\n    DATE_FORMAT(t.closeTs, '%Y-%m')          -- Grouper par mois\r\nORDER BY \r\n    month ASC;                               -- Trier les résultats par mois\r\n\r\n",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Nombre de trades par mois",
+        "type": "barchart"
+      }
+    ],
+    "refresh": "",
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {},
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL-BACKTEST-BDD}"
+          },
+          "definition": "SELECT name AS backtestName \nFROM BT_backtests;\n",
+          "hide": 0,
+          "includeAll": false,
+          "label": "backtest_name",
+          "multi": false,
+          "name": "backtest_name",
+          "options": [],
+          "query": "SELECT name AS backtestName \nFROM BT_backtests;\n",
+          "refresh": 2,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {},
+          "datasource": {
+            "type": "mysql",
+            "uid": "${DS_MYSQL-BACKTEST-BDD}"
+          },
+          "definition": "SELECT \n    s.id AS strategy_id\nFROM \n    BT_strategies s\nJOIN \n    BT_backtests b ON s.backtestId = b.id\nWHERE \n    b.name = '${backtest_name}';\n",
+          "hide": 0,
+          "includeAll": false,
+          "label": "Id de Stratégie",
+          "multi": false,
+          "name": "strategy_id",
+          "options": [],
+          "query": "SELECT \n    s.id AS strategy_id\nFROM \n    BT_strategies s\nJOIN \n    BT_backtests b ON s.backtestId = b.id\nWHERE \n    b.name = '${backtest_name}';\n",
+          "refresh": 1,
+          "regex": "",
+          "skipUrlSync": false,
+          "sort": 0,
+          "type": "query"
+        },
+        {
+          "current": {
+            "selected": false,
+            "text": "1",
+            "value": "1"
+          },
+          "hide": 0,
+          "includeAll": false,
+          "label": "Leverage",
+          "multi": false,
+          "name": "leverage",
+          "options": [
+            {
+              "selected": true,
+              "text": "1",
+              "value": "1"
+            },
+            {
+              "selected": false,
+              "text": "2",
+              "value": "2"
+            },
+            {
+              "selected": false,
+              "text": "3",
+              "value": "3"
+            },
+            {
+              "selected": false,
+              "text": "4",
+              "value": "4"
+            },
+            {
+              "selected": false,
+              "text": "5",
+              "value": "5"
+            }
+          ],
+          "query": "1,2,3,4,5",
+          "queryValue": "",
+          "skipUrlSync": false,
+          "type": "custom"
+        }
+      ]
+    },
+    "time": {
+      "from": "now-6h",
+      "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Backtest_V3",
+    "uid": "be0a50s5nq6tcb",
+    "version": 25,
+    "weekStart": ""
+  }
