@@ -1,0 +1,321 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: owncloud
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: owncloud-files-pvc
+  namespace: owncloud
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mariadb-pvc
+  namespace: owncloud
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: redis-pvc
+  namespace: owncloud
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: owncloud
+  namespace: owncloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: owncloud
+  template:
+    metadata:
+      labels:
+        app: owncloud
+    spec:
+      containers:
+      - name: owncloud
+        image: harbor.infra.edmee.cloud/docker/owncloud/server
+        ports:
+        - containerPort: 8080
+        env:
+        - name: OWNCLOUD_DOMAIN
+          value: owncloud.edmee.cloud
+        - name: OWNCLOUD_TRUSTED_DOMAINS
+          value: owncloud.edmee.cloud
+        - name: OWNCLOUD_DB_TYPE
+          value: "mysql"
+        - name: OWNCLOUD_DB_NAME
+          value: "owncloud"
+        - name: OWNCLOUD_DB_USERNAME
+          value: "owncloud"
+        - name: OWNCLOUD_DB_PASSWORD
+          value: "MVEUFSE03RBJVqvzdhye"
+        - name: OWNCLOUD_DB_HOST
+          value: "mariadb"
+        - name: OWNCLOUD_ADMIN_USERNAME
+          value: admin
+        - name: OWNCLOUD_ADMIN_PASSWORD
+          value: "ro839fuoufsbfeIYEGF"
+        - name: OWNCLOUD_MYSQL_UTF8MB4
+          value: "true"
+        - name: OWNCLOUD_REDIS_ENABLED
+          value: "true"
+        - name: OWNCLOUD_REDIS_HOST
+          value: "redis"
+        livenessProbe:
+          exec:
+            command: ["/usr/bin/healthcheck"]
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        readinessProbe:
+          exec:
+            command: ["/usr/bin/healthcheck"]
+          initialDelaySeconds: 30
+          periodSeconds: 30
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        volumeMounts:
+        - name: files
+          mountPath: /mnt/data
+      volumes:
+      - name: files
+        persistentVolumeClaim:
+          claimName: owncloud-files-pvc
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mariadb
+  namespace: owncloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: mariadb
+  template:
+    metadata:
+      labels:
+        app: mariadb
+    spec:
+      containers:
+      - name: mariadb
+        image: harbor.infra.edmee.cloud/docker/library/mariadb:10.11
+        ports:
+        - containerPort: 3306
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: "owncloud"
+        - name: MYSQL_USER
+          value: "owncloud"
+        - name: MYSQL_PASSWORD
+          value: "MVEUFSE03RBJVqvzdhye"
+        - name: MYSQL_DATABASE
+          value: "owncloud"
+        - name: MARIADB_AUTO_UPGRADE
+          value: "1"
+        args: ["--max-allowed-packet=128M", "--innodb-log-file-size=64M"]
+        livenessProbe:
+          exec:
+            command: ["mysqladmin", "ping", "-u", "root", "--password=owncloud"]
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command: ["mysqladmin", "ping", "-u", "root", "--password=owncloud"]
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "500m"
+          limits:
+            memory: "1Gi"
+            cpu: "1"
+        volumeMounts:
+        - name: mysql
+          mountPath: /var/lib/mysql
+      volumes:
+      - name: mysql
+        persistentVolumeClaim:
+          claimName: mariadb-pvc
+
+---
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: redis
+  namespace: owncloud
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: redis
+  template:
+    metadata:
+      labels:
+        app: redis
+    spec:
+      containers:
+      - name: redis
+        image: harbor.infra.edmee.cloud/docker/library/redis:6
+        ports:
+        - containerPort: 6379
+        args: ["--databases", "1"]
+        livenessProbe:
+          exec:
+            command: ["redis-cli", "ping"]
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        readinessProbe:
+          exec:
+            command: ["redis-cli", "ping"]
+          initialDelaySeconds: 10
+          periodSeconds: 10
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "250m"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+        volumeMounts:
+        - name: redis
+          mountPath: /data
+      volumes:
+      - name: redis
+        persistentVolumeClaim:
+          claimName: redis-pvc
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: owncloud
+  namespace: owncloud
+spec:
+  selector:
+    app: owncloud
+  ports:
+    - protocol: TCP
+      port: 8080
+      targetPort: 8080
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: mariadb
+  namespace: owncloud
+spec:
+  selector:
+    app: mariadb
+  ports:
+    - protocol: TCP
+      port: 3306
+      targetPort: 3306
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: redis
+  namespace: owncloud
+spec:
+  selector:
+    app: redis
+  ports:
+    - protocol: TCP
+      port: 6379
+      targetPort: 6379
+
+---
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: owncloud-ingress
+  namespace: owncloud
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-edmee-net
+spec:
+  tls:
+  - secretName: owncloud-tls
+    hosts:
+    - owncloud.edmee.cloud
+  ingressClassName: nginx
+  rules:
+  - host: owncloud.edmee.cloud
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: owncloud
+            port:
+              number: 8080
+
+---
+
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: owncloud-hpa
+  namespace: owncloud
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: owncloud
+  minReplicas: 1
+  maxReplicas: 5
+  metrics:
+  - type: Resource
+    resource:
+      name: cpu
+      target:
+        type: Utilization
+        averageUtilization: 80
+
+
