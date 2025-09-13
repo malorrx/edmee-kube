@@ -1,0 +1,14 @@
+## Cert-manager certificate for *.infra.edmee.cloud
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: nginx-default-certificate-infra-edmee-cloud
+  namespace: nginx-ingress
+spec:
+  secretName: nginx-ingress-default-server-tls
+  issuerRef:
+    name: letsencrypt-edmee-net
+    kind: ClusterIssuer
+  commonName: '*.infra.edmee.cloud'
+  dnsNames:
+    - '*.infra.edmee.cloud'
